@@ -9,4 +9,13 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <sys/socket.h>
+
+/**
+  * Get the in address from a sockaddr struct.
+  * @param sa The sockaddr struct to extract the information from
+  * @return The IPv4 or IPv6 address, depending on the type.
+  */
+void *get_in_addr(struct sockaddr *sa);
+
 #endif

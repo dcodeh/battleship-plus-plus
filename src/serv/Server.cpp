@@ -21,23 +21,14 @@
 #include <netdb.h>
 #include <unistd.h>
 
+#include "Common.h"
+
 void sigchld_handler(int s) {
     printf("sigchld_handler: %d\n", s);
     int saved_errno = errno;
     while(waitpid(-1, NULL, WNOHANG) > 0);
     errno = saved_errno;
 }
-
-void *get_in_addr(struct sockaddr *sa) {
-    if (sa->sa_family == AF_INET) {
-        // get ipv4 field
-        return &(((struct sockaddr_in *) sa) -> sin_addr);
-    } else {
-        // ipv6 field
-        return &(((struct sockaddr_in6 *) sa) -> sin6_addr);
-    }
-}
-
 
 int main (int argc, char ** argv) {
     const char *port;
