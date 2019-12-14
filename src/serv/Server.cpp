@@ -14,13 +14,13 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-int main (int arc, char ** argv) {
-    int32_t server_fd, new_socket, data;
+int main (int argc, char ** argv) {
+    int32_t server_fd, new_socket;
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
     char buffer[1024] = {0};
-    char *hellow = "Hellow World!";
+    const char *hellow = "Hellow World!";
 
     // Create the file descriptor for the socket
     if (!(server_fd = socket(AF_INET, SOCK_STREAM, 0))) {
@@ -55,7 +55,7 @@ int main (int arc, char ** argv) {
         return EXIT_FAILURE;
     }
 
-    data = read(new_socket, buffer, 1024);
+    read(new_socket, buffer, 1024);
     printf("%s\n", buffer);
     send(new_socket, hellow, strlen(hellow), 0);
     printf("Sent Message.\n");

@@ -6,26 +6,35 @@
 # ##############################################################################
 
 CXX         := -g++
-CXXFLAGS    := -pedantic-errors -Wall -Wextra -Werror
+CXXFLAGS    := -pedantic-errors -Wall -Wextra # -Werror # TODO DCB uncomment later
 LDFLAGS     := 
 BUILD       := ./build
 OBJ_DIR     := $(BUILD)/obj
-TARGET      := bpp
+SRV_TARGET  := bpp_server
+CLT_TARGET  := bpp_client
 INCLUDE     := -Iinclude/
-SRC         :=  $(wildcard src/serv/*.cpp) \
-                $(wildcard src/client/*.cpp) \
+CLT_SRC     := $(wildcard src/client/*.cpp)
+SRV_SRC     := $(wildcard src/serv/*.cpp)
 
-OBJECTS     := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+SRV_OBJECTS     := $(SRV_SRC:%.cpp=$(OBJ_DIR)/%.o)
+CLT_OBJECTS     := $(CLT_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
-all: build $(APP_DIR)/$(TARGET)
+server: build $(SRV_TARGET)
+client: built $(CLT_TARGET)
+
+all: build $(SRV_TARGET) $(CLT_TARGET)
 
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 
-$(APP_DIR)/$(TARGET): $(OBJECTS)
+$(SRV_TARGET): $(OBJECTS)
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $(APP_DIR)/$(TARGET) $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $(SRV_TARGET) $(SRV_OBJECTS)
+
+$(CLT_TARGET): $(OBJECTS)
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $(CLT_TARGET) $(CLT_OBJECTS)
 
 build:
 	@mkdir -p $(OBJ_DIR)
@@ -35,4 +44,3 @@ debug: all
 
 clean:
 	-@rm -rvf $(OBJ_DIR)/*
-
