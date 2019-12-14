@@ -1,0 +1,182 @@
+ViewListener: (Messages passed to the Model)
+- Administrative Messages:
+    - void join(char * name, char * ship_name, uint8_t ship_class, uint8_t fleet) 
+        'J', UTF String, UTF String, uint8_t, uint8_t
+    - void version(char * ver_string)
+        'V', UTF String
+    - void quit(char *reason)
+        'Q', UTF String
+- Gameplay Messages:
+    - void radio_send(char * msg)
+        'R', UTF String
+    - void fire_flare()
+        'F'
+    - void scuttle_ship()
+        'S'
+    - void maneuver(uint16_t newx, uint16_t newy)
+        'M', uint16_t, uint16_t
+    - void adj_heading(uint8_t heading)
+        'H', uint8_t
+    - void cruise()
+        'C'
+    - void allstop()
+        's'
+    - void radar()
+        'r'
+    - void fire_gun(uint16_t x, uint16_t y)
+        'f', uint16_t, uint16_t
+    - void dump_cargo(uint16_t amount)
+        'D', uint16_t
+    - void look()
+        'L'
+    - void fire_cruise_missile(uint16_t x, uint16_t y)
+        'm', uint16_t, uint16_t
+    - void fire_torpedo(uint16_t x, uint16_t y)
+        'T', uint16_t, uint16_t
+    - void dive()
+        'U'
+    - void surface()
+        'u'
+    - void airstrike()
+        'A'
+    - void change_flag(uint8_t navy)
+        'P', uint8_t
+    - void scrap(uint16_t x, uint16_t y)
+        'X', uint16_t, uint16_t
+    - void reverse()
+        'B'
+    - void lay_mine()
+        '*'
+    - void tow_ship(uint16_t x, uint16_t y)
+        't', uint16_t, uint16_t
+    - void decouple_ship()
+        'd'
+    - void radio_encrypted(char * msg, char key)
+        'E', UTF String, char
+
+ModelListener:
+- Administrative Messages:
+    - void version(char * ver_string)
+        'V', UTF String
+    - fleet_list(uint8_t num_fleets, char ** fleets)
+        'F', uint8_t, char *, char *,...char *
+    - ship_class_list(uint8_t num_ships, char ** ship_names)
+        'S', uint8_t, char *, char *,...char *
+        TODO DCB consider passing more than just the names along in the future
+    - void quit(char *reason)
+        'Q', UTF String
+    - void info(char * msg)
+        ':', UTF String
+    - void err(char * explanation)
+        '~', UTF String
+- Gameplay Messages:
+    - void turn(char *name)
+        'T', UTF String
+    - void radio_recv(char * msg)
+        'R', UTF String
+    - void update_location(uint16_t x, uint16_t y)
+        'L', uint16_t, uint16_t
+    - void update_heading(uint8_t heading)
+        'H', uint8_t (enum for N, NE, E, SE, etc.)
+    - void update_speed(uint8_t speed)
+        'v', uint8_t
+    - void flare_seen(uint16_t x, uint16_t y)
+        'F', uint16_t, uint16_t
+    - void sub_detected(uint16_t x, uint16_t y, uint8_t heading)
+        's', uint16_t, uint16_t, uint8_t
+    - void submerged_object(uint16_t x, uint16_t y)
+        'B', uint16_t, uint16_t
+    - void armor(uint16_t remaining)
+        'A', uint16_t
+    - void hits(uint8_t remaining)
+        'h', uint8_t
+    - void radar_objects(uint8_t num, obj ** objs)
+        'r', uint8_t, obj, obj,...obj
+        Where objects are passed with the following format:
+        uint8_t ID, uint16_t x, uint16_t y, [uint8_t type] NULL
+        ID  Object
+        0   Ship [type] (ship, aircraft carrier, sub, semi-sub, etc.)
+        1   Refueling Station
+        2   Port
+        3   Iceberg
+    - void visible objects( uint8_t num, obj ** obj)
+        'o', uint8_t, obj, obj
+        Where objects are passed with the following format
+        uint8_t ID, uint16_t x, uint16_t y, UTF STRING DETAIL, NULL
+        ID  Object
+        0-3 See above
+        4   Ship Flag (which fleet ship belongs to)
+        5   Ship Hull designation
+        6   Disabled ship
+        7   Rough seas
+        8   Floating cargo  [amount]
+    - void update_fuel(uint8_t fuel)
+        'f', uint8_t
+    - void update_cargo(uint16_t cargo)
+        'C', uint16_t (tons)
+    - void hit(uint16_t x, uint16_t y)
+        'X', uint16_t, uint16_t
+    - void miss(uint16_t x, uint16_t y)
+        'O', uint16_t, uint16_t
+    - void disabled(char * systems)
+        'D', UTF String
+    - void update_cruise_missiles(uint8_t remaining)
+        'M', uint8_t
+    - void submerged(bool submerged)
+        'U', bool
+    - void submerged_turns_left(uint8_t remaining)
+        'u', uint8_t
+    - void airstrikes_remaining(uint8_t remaining)
+        'a', uint8_t 
+    - void struck_mine()
+        '.'
+    - void ran_aground()
+        '_'
+    - void struck_iceberg()
+        'Z'
+    - void in_bermuda(bool disabled)
+        'z', bool
+    - void in_rough_seas()
+        'w'
+    - void nearby_mines(uint8_t num, uint16_t ...)
+        'N', uint8_t, uint16_t x, uint16_t y,...
+    - void enc_radio_recv(char * msg, char key)
+        'E', char *, char
+    - void win(uint16_t your_score, uint16_t their_score)
+        'W', uint16_t, uint16_t
+    - void lose(uint16_t your_score, uint16_t their_score)
+        'l', uint16_t, uint16_t
+    - void draw(uint16_t score)
+        '=', uint16_t
+    - void ship_destroyed(uint16_t x, uint16_t y)
+        '#', uint16_t, uint16_t
+    - void you_sank()
+        'Y'
+    - void foggy()
+        '&'
+    - void mine_detonanted(uint16_t x, uint16_t y)
+        '^', uint16_t, uint16_t
+    - void explosion_nearby(uint16_t x, uint16_t y)
+        '`', uint16_t, uint16_t
+    - void collision()
+        '@'
+
+Notes:
+    - Fleet names are passed into server program as command line arguments
+    - After client connects to server
+        - Server sends a list of fleets that can be joined
+        - Server sends ship selection information (just names for now...)
+    - Turn message is sent to all clients each time someone's turn starts.
+      The view should only do something if the player name matches their
+      player's name.
+    - err message '~' is used by the server to say that the client can't do
+      something. e.g. Invalid move (too far)
+    - maneuver message automatically updates the server's heading
+    - Radio boats can use the radio_enc, which sends plaintext message and key
+      to server. Server scrambles message, and sends it to every normal ship
+      using the radio_recv message. Any other radio ships receive the scrambled
+      message, and the key to decipher it.
+    - ship_destroyed message is for notifying that a nearby ship sank. you_sank
+      is for specifying that your ship sank.
+    - mine_detonated is for the mine ship only to inform it that something
+      triggered a mine that it laid
