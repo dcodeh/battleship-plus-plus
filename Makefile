@@ -20,7 +20,7 @@ SRV_OBJECTS     := $(SRV_SRC:%.cpp=$(OBJ_DIR)/%.o)
 CLT_OBJECTS     := $(CLT_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 server: build $(SRV_TARGET)
-client: built $(CLT_TARGET)
+client: build $(CLT_TARGET)
 
 all: build $(SRV_TARGET) $(CLT_TARGET)
 

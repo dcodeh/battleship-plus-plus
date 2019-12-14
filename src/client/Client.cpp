@@ -27,7 +27,7 @@ int main (int argc, char **argv) {
    server_addr.sin_family = AF_INET;
    server_addr.sin_port = htons(PORT);
 
-   if (inet_pton(AF_INET, "localhost", &server_addr.sin_addr) <= 0) {
+   if (inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) <= 0) {
        perror("FATAL: Unsupported address.\n");
        return EXIT_FAILURE;
    }
