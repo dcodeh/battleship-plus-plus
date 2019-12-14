@@ -34,3 +34,5 @@
 # Other stuff 
 *.swp
 plan.txt
+bpp_client
+bpp_server

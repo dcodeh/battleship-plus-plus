@@ -19,20 +19,20 @@ SRV_SRC     := $(wildcard src/serv/*.cpp)
 SRV_OBJECTS     := $(SRV_SRC:%.cpp=$(OBJ_DIR)/%.o)
 CLT_OBJECTS     := $(CLT_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
+all: build $(SRV_TARGET) $(CLT_TARGET)
+
 server: build $(SRV_TARGET)
 client: build $(CLT_TARGET)
-
-all: build $(SRV_TARGET) $(CLT_TARGET)
 
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 
-$(SRV_TARGET): $(OBJECTS)
+$(SRV_TARGET): $(SRV_OBJECTS)
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $(SRV_TARGET) $(SRV_OBJECTS)
 
-$(CLT_TARGET): $(OBJECTS)
+$(CLT_TARGET): $(CLT_OBJECTS)
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $(CLT_TARGET) $(CLT_OBJECTS)
 
@@ -43,4 +43,9 @@ debug: CXXFLAGS += -DDEBUG -g
 debug: all
 
 clean:
-	-@rm -rvf $(OBJ_DIR)/*
+	-@rm -rv $(BUILD)/*
+	-@rmdir -v $(BUILD)
+
+uberclean: clean
+	-@rm -v $(SRV_TARGET)
+	-@rm -v $(CLT_TARGET)
