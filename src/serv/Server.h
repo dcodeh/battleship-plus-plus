@@ -8,4 +8,6 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#define BACKLOG 10 // Store 10 up to 10 backlogged connections
+
 #endif

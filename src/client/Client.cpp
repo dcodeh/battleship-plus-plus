@@ -7,60 +7,42 @@
 
 #include "Client.h"
 #include <arpa/inet.h>
+#include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
-#include <unistd.h>
+#include <sys/types.h>
 
-static const char *usage = "Usage: $ bpp_client server_ip port";
-
-/**
-  * Usage: ./bpp_client server_ip port
-  */
 int main (int argc, char **argv) {
-    // check usage:
-    char *ip_addr_str = NULL;
-    char *port_str = NULL;
+    // check command line arguments
+    const char *ip;
+    const char *port;
     if (argc == 3) {
-        ip_addr_str = argv[1];
-        port_str = argv[2];
+        ip = argv[1];
+        port = argv[2];
     } else {
-        perror(usage);
+        fprintf(stderr, "Usage: $ ./bpp_client server_ip port\n");
         return EXIT_FAILURE;
     }
 
-    uint16_t port_num = (uint16_t) strtoul(port_str, NULL /* endptr*/, 
-                                           10 /* base */);
-    int sock = 0;
-    struct sockaddr_in server_addr;
-    const char *hellow = "Hellow from the client!";
-    char buffer[1024] = {0};
+    int status;
+    struct addrinfo hints;
+    struct addrinfo *servinfo;
 
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        perror("FATAL: Socket creation failed.\n");
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;        // USE IPV 4 or 6 I don't care
+    hints.ai_socktype = SOCK_STREAM;    // Use TCP
+
+    status = getaddrinfo(ip, port, &hints, &servinfo);
+    if (status != 0) {
+        fprintf(stderr, "FATAL: failed to connect to server: %s\n",
+                gai_strerror(status));
         return EXIT_FAILURE;
     }
 
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(port_num);
+    // TODO DCB do stuff herre
 
-    if (inet_pton(AF_INET, ip_addr_str, &server_addr.sin_addr) <= 0) {
-        perror("FATAL: Unsupported address.\n");
-        close(sock);
-        return EXIT_FAILURE;
-    }
-
-    if (connect(sock, (struct sockaddr*) &server_addr, sizeof(server_addr)) < 0) {
-        perror("FATAL: Socket connection failed!\n");
-        close(sock);
-        return EXIT_FAILURE;
-    }
-
-    send(sock, hellow, strlen(hellow), 0);
-    printf("Send Hello Message.\n");
-    read(sock, buffer, 1024);
-    printf("%s\n", buffer);
-    close(sock);
+    freeaddrinfo(servinfo);
     return EXIT_SUCCESS;
 }

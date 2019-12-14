@@ -8,77 +8,136 @@
 
 #include "Server.h"
 #include <arpa/inet.h>
+#include <errno.h>
+#include <netdb.h>
 #include <netinet/in.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <netdb.h>
 #include <unistd.h>
 
-static const char *USAGE = "Usage: $ ./bpp_server ip_addr port";
+void sigchld_handler(int s) {
+    printf("sigchld_handler: %d\n", s);
+    int saved_errno = errno;
+    while(waitpid(-1, NULL, WNOHANG) > 0);
+    errno = saved_errno;
+}
+
+void *get_in_addr(struct sockaddr *sa) {
+    if (sa->sa_family == AF_INET) {
+        // get ipv4 field
+        return &(((struct sockaddr_in *) sa) -> sin_addr);
+    } else {
+        // ipv6 field
+        return &(((struct sockaddr_in6 *) sa) -> sin6_addr);
+    }
+}
+
 
 int main (int argc, char ** argv) {
-
-    const char *ip_str;
-    const char *port_str;
-    if (argc == 3) {
-        ip_str = argv[1];
-        port_str = argv[2];
+    const char *port;
+    if (argc == 2) {
+        port = argv[1];
     } else {
-        perror(USAGE);
+        fprintf(stderr, "Usage: $ ./bpp_server port\n");
         return EXIT_FAILURE;
     }
 
-    int32_t server_fd, new_socket;
-    struct sockaddr_in address;
-    int opt = 1;
-    int addrlen = sizeof(address);
-    char buffer[1024] = {0};
-    const char *hellow = "Hellow World!";
+    int status;
+    struct addrinfo hints;
+    struct addrinfo *servinfo;
 
-    // Create the file descriptor for the socket
-    if (!(server_fd = socket(AF_INET, SOCK_STREAM, 0))) {
-        perror("FATAL: Socket creation failed.\n");
+    memset(&hints, 0, sizeof(hints));   // init to 0
+    hints.ai_family = AF_UNSPEC;        // Use whatever ip standard
+    hints.ai_socktype = SOCK_STREAM;    // use TCP
+    hints.ai_flags = AI_PASSIVE;        // determine IP addr automagically
+
+    status = getaddrinfo(NULL, port, &hints, &servinfo);
+    if (status != 0) {
+        fprintf(stderr, "FATAL: failed to get host address info: %s\n",
+                gai_strerror(status));
         return EXIT_FAILURE;
     }
 
-    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,
-                sizeof(opt))) {
-        perror("FATAL: Could not configure socket options.\n");
-        close(server_fd);
+    // find the first result we can bind to
+    int sockfd; // socket file descroptor
+    int new_fd; // new connections
+    int yes = 1;
+    struct addrinfo *p;
+    for (p = servinfo; p != NULL; p = p->ai_next) {
+        if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {
+            perror("socket");
+            continue;
+        }
+
+        if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
+            perror("setsockopt");
+            continue;
+        }
+
+        if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+            close(sockfd);
+            perror("bind");
+            continue;
+        }
+
+        break;
+    }
+
+    freeaddrinfo(servinfo);
+
+    if (p == NULL) {
+        fprintf(stderr, "FATAL: unable to bind server socket.\n");
         return EXIT_FAILURE;
     }
 
-    address.sin_family = AF_INET;
-    // address.sin_addr.s_addr = INADDR_ANY; // binds to all interfaces
-    inet_pton(AF_INET, ip_str, &(address.sin_addr));
-    uint16_t portnum = (uint16_t) strtoul(port_str, NULL /* endptr */, 10 /* base */);
-    address.sin_port = htons(portnum);
-
-    // binding time!
-    if (bind(server_fd, (struct sockaddr *) &address, sizeof(address)) < 0) {
-        perror("FATAL: Failed to bind socket.\n");
-        close(server_fd);
+    if (listen(sockfd, BACKLOG) == -1) {
+        perror("listen");
         return EXIT_FAILURE;
     }
 
-    if (listen(server_fd, 3) < 0) {
-        perror("FATAL: Listening Failed.\n");
-        close(server_fd);
+    struct sigaction sa;
+    struct sockaddr_storage their_addr;
+    sa.sa_handler = sigchld_handler; // reap all dead processes
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+    if (sigaction(SIGCHLD, &sa, NULL) == -1) {
+        perror("sigaction");
         return EXIT_FAILURE;
     }
 
-    if ((new_socket = accept(server_fd,(struct sockaddr *) &address, 
-                (socklen_t *) &addrlen)) < 0) {
-        perror("FATAL: Failed to accept socket connection!.\n");
-        close(server_fd);
-        return EXIT_FAILURE;
+    printf("Waiting for connections\n");
+
+    // accept all new connections
+    socklen_t sin_size;
+    char s[INET6_ADDRSTRLEN];
+    while (true) {
+        sin_size = sizeof(their_addr);
+        new_fd = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
+        if (new_fd == -1) {
+            perror("accept");
+            continue;
+        }
+
+        inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *) &their_addr), s, sizeof(s));
+        printf("New connection from %s\n", s);
+
+        if (!fork()) {
+            // only run by the child process
+            close(sockfd);
+            if(send(new_fd, "HELLOW WORLD!", 13, 0) == -1) {
+                perror("send");
+            }
+            close(new_fd);
+            return EXIT_SUCCESS;
+        }
+        close(new_fd); // paren't doesn't use this
     }
 
-    read(new_socket, buffer, 1024);
-    printf("%s\n", buffer);
-    send(new_socket, hellow, strlen(hellow), 0);
-    printf("Sent Message.\n");
-    close(server_fd);
     return EXIT_SUCCESS;
 }
