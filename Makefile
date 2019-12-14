@@ -6,7 +6,7 @@
 # ##############################################################################
 
 CXX         := -g++
-CXXFLAGS    := -pedantic-errors -Wall -Wextra # -Werror # TODO DCB uncomment later
+CXXFLAGS    := -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS     := 
 BUILD       := ./build
 OBJ_DIR     := $(BUILD)/obj
