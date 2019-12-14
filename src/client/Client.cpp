@@ -8,11 +8,15 @@
 #include "Client.h"
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <unistd.h>
+
+#include "Common.h"
 
 int main (int argc, char **argv) {
     // check command line arguments
@@ -41,8 +45,45 @@ int main (int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    // TODO DCB do stuff herre
+    // try to connect to the first valid interface
+    int sockfd;
+    struct addrinfo *p;
+    for (p = servinfo; p != NULL; p = p -> ai_next) {
+        if ((sockfd = socket(p -> ai_family, p -> ai_socktype, p -> ai_protocol)) == -1) {
+            perror("socket call failed");
+            continue;
+        }
+
+        if (connect(sockfd, p -> ai_addr, p -> ai_addrlen) == -1) {
+            close(sockfd);
+            perror("connect failed");
+            continue;
+        }
+
+        break;
+    }
+
+    if (p == NULL) {
+        fprintf(stderr, "Failed to connect to server.\n");
+        return EXIT_FAILURE;
+    }
+
+    char s[INET6_ADDRSTRLEN];
+    inet_ntop(p -> ai_family, get_in_addr((struct sockaddr *) p -> ai_addr), s, sizeof(s));
+    printf("Connecting to %s\n", s);
 
     freeaddrinfo(servinfo);
+
+    char buf[100];
+    int numbytes;
+    if ((numbytes = recv(sockfd, buf, 99, 0)) == -1) {
+        perror("recv");
+        return EXIT_FAILURE;
+    }
+
+    buf[numbytes] = '\0';
+    printf("received %s\n", buf);
+
+    close(sockfd);
     return EXIT_SUCCESS;
 }
