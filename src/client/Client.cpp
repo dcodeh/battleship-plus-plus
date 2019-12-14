@@ -13,33 +13,54 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+static const char *usage = "Usage: $ bpp_client server_ip port";
+
+/**
+  * Usage: ./bpp_client server_ip port
+  */
 int main (int argc, char **argv) {
-   int sock = 0;
-   struct sockaddr_in server_addr;
-   const char *hellow = "Hellow from the client!";
-   char buffer[1024] = {0};
+    // check usage:
+    char *ip_addr_str = NULL;
+    char *port_str = NULL;
+    if (argc == 3) {
+        ip_addr_str = argv[1];
+        port_str = argv[2];
+    } else {
+        perror(usage);
+        return EXIT_FAILURE;
+    }
 
-   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-       perror("FATAL: Socket creation failed.\n");
-       return EXIT_FAILURE;
-   }
+    uint16_t port_num = (uint16_t) strtoul(port_str, NULL /* endptr*/, 
+                                           10 /* base */);
+    int sock = 0;
+    struct sockaddr_in server_addr;
+    const char *hellow = "Hellow from the client!";
+    char buffer[1024] = {0};
 
-   server_addr.sin_family = AF_INET;
-   server_addr.sin_port = htons(PORT);
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        perror("FATAL: Socket creation failed.\n");
+        return EXIT_FAILURE;
+    }
 
-   if (inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) <= 0) {
-       perror("FATAL: Unsupported address.\n");
-       return EXIT_FAILURE;
-   }
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(port_num);
 
-   if (connect(sock, (struct sockaddr*) &server_addr, sizeof(server_addr)) < 0) {
-       perror("FATAL: Socket connection failed!\n");
-       return EXIT_FAILURE;
-   }
+    if (inet_pton(AF_INET, ip_addr_str, &server_addr.sin_addr) <= 0) {
+        perror("FATAL: Unsupported address.\n");
+        close(sock);
+        return EXIT_FAILURE;
+    }
 
-   send(sock, hellow, strlen(hellow), 0);
-   printf("Send Hello Message.\n");
-   read(sock, buffer, 1024);
-   printf("%s\n", buffer);
-   return EXIT_SUCCESS;
+    if (connect(sock, (struct sockaddr*) &server_addr, sizeof(server_addr)) < 0) {
+        perror("FATAL: Socket connection failed!\n");
+        close(sock);
+        return EXIT_FAILURE;
+    }
+
+    send(sock, hellow, strlen(hellow), 0);
+    printf("Send Hello Message.\n");
+    read(sock, buffer, 1024);
+    printf("%s\n", buffer);
+    close(sock);
+    return EXIT_SUCCESS;
 }

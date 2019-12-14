@@ -1,11 +1,12 @@
-// File: Client.h
+// File: Common.h
 // Author: Cody Burrows (dcodyburrows@gmail.com)
 // Battleship Plus Plus 0.1
 //
-// This file provides supporting definitions for Client.cpp.
+// This header file contains declarations and globals that are used by all of 
+// the modules in the project.
 // /////////////////////////////////////////////////////////////////////////////
 
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef COMMON_H
+#define COMMON_H
 
 #endif
