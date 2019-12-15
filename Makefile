@@ -16,10 +16,12 @@ INCLUDE     := -Isrc/common/
 COMMON_SRC  := $(wildcard src/common/*.cpp)
 CLT_SRC     := $(wildcard src/client/*.cpp)
 SRV_SRC     := $(wildcard src/serv/*.cpp)
+CTRL_SRC    := $(wildcard src/controller/*.cpp)
 
 SRV_OBJECTS     := $(SRV_SRC:%.cpp=$(OBJ_DIR)/%.o)
 CLT_OBJECTS     := $(CLT_SRC:%.cpp=$(OBJ_DIR)/%.o)
 COMMON_OBJECTS  := $(COMMON_SRC:%.cpp=$(OBJ_DIR)/%.o)
+CTRL_OBJECTS    := $(CTRL_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 all: build $(SRV_TARGET) $(CLT_TARGET)
 

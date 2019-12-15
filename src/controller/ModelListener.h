@@ -1,4 +1,4 @@
-// File: ModelListener.cpp
+// File: ModelListener.h
 // Author: Cody Burrows (dcodyburrows@gmail.com)
 // Battleship Plus Plus 0.1
 //
@@ -7,6 +7,8 @@
 // proxy, which communicates with the client's model proxy over the network.
 // /////////////////////////////////////////////////////////////////////////////
 
+#ifndef "MODELLISTENER_H"
+#define "MODELLISTENER_H"
 #include "Common.h"
 
 class ModelListener {
@@ -44,3 +46,5 @@ class ModelListener {
     // GAMEPLAY MESSAGES
         // TODO DCB fill these in
 }
+
+#endif 

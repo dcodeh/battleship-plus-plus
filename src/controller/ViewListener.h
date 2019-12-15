@@ -1,4 +1,4 @@
-// File: ViewListener.cpp
+// File: ViewListener.h
 // Author: Cody Burrows (dcodyburrows@gmail.com)
 // Battleship Plus Plus 0.1
 //
@@ -8,6 +8,8 @@
 // model over the network.
 // /////////////////////////////////////////////////////////////////////////////
 
+#ifndef "VIEWLISTENER_H"
+#define "VIEWLISTENER_H"
 #include "Common.h"
 
 class ViewListener {
@@ -42,3 +44,5 @@ class ViewListener {
     // GAMEPLAY MESSAGES
         // TODO DCB fill these in
 }
+
+#endif
