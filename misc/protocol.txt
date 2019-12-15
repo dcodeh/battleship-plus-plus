@@ -4,8 +4,8 @@ ViewListener: (Messages passed to the Model)
         'J', UTF String, UTF String, uint8_t, uint8_t
     - void version(char * ver_string)
         'V', UTF String
-    - void quit(char *reason)
-        'Q', UTF String
+    - void quit()
+        'Q'
 - Gameplay Messages:
     - void radio_send(char * msg)
         'R', UTF String
@@ -63,8 +63,8 @@ ModelListener:
     - ship_class_list(uint8_t num_ships, char ** ship_names)
         'S', uint8_t, char *, char *,...char *
         TODO DCB consider passing more than just the names along in the future
-    - void quit(char *reason)
-        'Q', UTF String
+    - void quit()
+        'Q'
     - void info(char * msg)
         ':', UTF String
     - void err(char * explanation)

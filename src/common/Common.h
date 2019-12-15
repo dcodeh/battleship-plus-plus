@@ -18,4 +18,8 @@
   */
 void *get_in_addr(struct sockaddr *sa);
 
+enum ShipType {battleship, destroyer, cargo_ship, frigate, submarine,
+               aircraft_carrier, cruiser, repair_ship, minesweeper, semi_sub,
+               tug, radio_ship};
+
 #endif
