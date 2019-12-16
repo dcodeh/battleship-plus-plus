@@ -1,40 +1,32 @@
-// File: View.h
+// File: ViewProxy.h
 // Author: Cody Burrows (dcodyburrows@gmail.com)
 // Battleship Plus Plus 0.1
 //
-// This header exports the functions that the view implements in the
-// ViewListener interface.
+// This file exports all of the functions that the ViewProxy class implements.
 // /////////////////////////////////////////////////////////////////////////////
 
-#ifndef "VIEW_H"
-#define "VIEW_H"
+#ifndef "VIEWPROXY_H"
+#define "VIEWPROXY_H"
 
 #include "ModelListener.h"
 #include "ViewListener.h"
-#include <mutex>
+#define BUFSZ 1024
 
-mutex _mutex;
-
-class View : public ModelListener {
-
+class ViewProxy : public ModelListener {
 
     private:
+        int m_sockfd;
         ViewListener m_listener;
+        void listen_for_messages();
+
     public:
-        /** 
-          * Default Constructor...
-          */
-        View() {
+        ViewProxy(int socket_fd) {
+            m_sockfd = socket_fd;
         }
 
-        /**
-          * Default Destructor...
-          */
+        ~ViewProxy();
 
-        ~View() {
-        }
-
-        void version(char *ver_string);
+        void version (char *ver_string);
 
         void quit();
 

@@ -70,7 +70,7 @@ int main (int argc, char **argv) {
 
     char s[INET6_ADDRSTRLEN];
     inet_ntop(p -> ai_family, get_in_addr((struct sockaddr *) p -> ai_addr), s, sizeof(s));
-    printf("Connecting to %s\n", s);
+    printf("Connecting to BPP server %s\n", s);
 
     freeaddrinfo(servinfo);
 

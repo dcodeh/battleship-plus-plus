@@ -125,6 +125,7 @@ int main (int argc, char ** argv) {
                 perror("send");
             }
             close(new_fd);
+            // child process exits
             return EXIT_SUCCESS;
         }
         close(new_fd); // paren't doesn't use this
