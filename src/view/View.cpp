@@ -12,23 +12,22 @@
 
 void View::version(char *ver_string) {
     unique_lock<mutex> lock (_mutex);
-    // TODO DCB
+    printf("version %s\n", ver_string);
 }
 
 void View::quit() {
     unique_lock<mutex> lock (_mutex);
-    // TODO DCB
-    exit(0);
+    print("die\n");
 }
 
 void View::info(char *msg) {
     unique_lock<mutex> lock (_mutex);
-    printf("%s\n", msg);
+    printf("info %s\n", msg);
 }
 
 void View::err(char *msg) {
     unique_lock<mutex> lock (_mutex);
-    // TODO DCB
+    printf("err %s\n", msg);
 }
 
 void View::set_listener(ViewListener m) {

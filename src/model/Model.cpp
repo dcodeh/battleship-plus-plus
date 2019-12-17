@@ -7,6 +7,7 @@
 // /////////////////////////////////////////////////////////////////////////////
 
 #include "Model.h"
+#include <stdio.h>
 #include <mutex>
 #include <vector>
 
@@ -24,15 +25,16 @@ void Model::register_listener(ModelListener v) {
 void Model::join(char *name, char *ship_name, ShipType ship_type, 
                  uint8_t fleet) {
     unique_lock<mutex> lock (_mutex);
-    // TODO DCB
+    printf("Captain %s of %s (type %d) joined fleet %d\n", name, ship_name,
+           ship_type, fleet);
 }
 
 void Model::version(char *ver_string) {
     unique_lock<mutex> lock (_mutex);
-    // TODO DCB
+    printf("version %s\n", ver_string);
 }
 
 void Model::quit() {
     unique_lock<mutex> lock (_mutex);
-    // TODO DCB
+    printf("goodbye cruel world\n");
 }

@@ -8,6 +8,7 @@
 #ifndef "MODEL_PROXY_H"
 #define "MODEL_PROXY_H"
 
+#include <thread>
 #include "ModelProxy.h"
 #include "ViewProxy.h"
 #define BUFSZ 1024 // TODO DCB make this a global constant or something
@@ -17,14 +18,21 @@ class ModelProxy : public ViewListener {
     private: 
         int m_sockfd;
         ModelListener m_listener;
+        std::thread *m_listener_thread;
+
         void listen_for_messages();
 
     public:
         ModelProxy(int sockfd) {
             m_sockfd = sockfd;
+            m_listener_thread = NULL;
         }
 
-        ~ModelProxy();
+        ~ModelProxy() {
+            if (m_listener_thread != NULL) {
+                delete m_listener_thread;
+            }
+        }
 
         void join(char *name, char *ship_name, ShipType ship_type,
                   uint8_t fleet);

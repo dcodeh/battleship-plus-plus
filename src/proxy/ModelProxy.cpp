@@ -26,11 +26,7 @@ void ModelProxy::quit() {
 
 void ModelProxy::set_listener(ModelListener v) {
     m_listener = v;
-
-    if (!fork()) {
-        // child process does this
-        listen_for_mesages();
-    }
+    m_listener_thread = new std::thread(listen_for_messages);
 }
 
 void ModelProxy::listen_for_messages() {

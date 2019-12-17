@@ -8,6 +8,7 @@
 // /////////////////////////////////////////////////////////////////////////////
 
 #include "ViewProxy.h"
+#include <thread>
 #include <sys/socket.h>
 #include <sys/types.h>
 
@@ -29,11 +30,7 @@ void ViewProxy::err(char *msg) {
 
 void ViewProxy::set_listener(ViewListener m) {
     m_listener = m;
-
-    if(!fork()) {
-        // child process listens
-        listen_for_messages();
-    }
+    m_listener_thread = new std::thread(listen_for_messages);
 }
 
 void ViewProxy::listen_for_messages() {
@@ -42,7 +39,6 @@ void ViewProxy::listen_for_messages() {
     while (true) {
         // read a byte
         if ((num_bytes = recv(m_sockfd, buf, 1, 0)) == -1) {
-            // TODO DCB when (if ever) will this exit?
             perror("ViewProxy recv");
         }
 
