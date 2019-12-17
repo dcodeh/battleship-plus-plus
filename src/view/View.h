@@ -6,8 +6,8 @@
 // ViewListener interface.
 // /////////////////////////////////////////////////////////////////////////////
 
-#ifndef "VIEW_H"
-#define "VIEW_H"
+#ifndef VIEW_H
+#define VIEW_H
 
 #include "ModelListener.h"
 #include "ViewListener.h"

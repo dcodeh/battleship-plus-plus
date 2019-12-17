@@ -8,13 +8,19 @@
 // model over the network.
 // /////////////////////////////////////////////////////////////////////////////
 
-#ifndef "VIEWLISTENER_H"
-#define "VIEWLISTENER_H"
+#ifndef VIEWLISTENER_H
+#define VIEWLISTENER_H
 #include "Common.h"
+#include <stdint.h>
 
 class ViewListener {
 
     public:
+        /**
+          * Virtual destructor...
+          */
+        virtual ~ViewListener() = 0;
+
     // ADMINISTRATIVE MESSAGES
         /**
           * Tell the ViewListener about the client joining the game.
@@ -43,6 +49,6 @@ class ViewListener {
 
     // GAMEPLAY MESSAGES
         // TODO DCB fill these in
-}
+};
 
 #endif

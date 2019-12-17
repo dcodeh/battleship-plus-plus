@@ -22,6 +22,7 @@
 #include <unistd.h>
 
 #include "ModelListener.h"
+#include "Model.h"
 #include "ViewListener.h"
 #include "Common.h"
 
@@ -41,9 +42,11 @@ int main (int argc, char ** argv) {
         return EXIT_FAILURE;
     }
 
-    Model model = new Model();
+    Model m();
     printf("Created a new model object...\n");
-    delete model;
+
+    // TODO DCB remove this later...
+    printf("%s\n", port);
 
 //    int status;
 //    struct addrinfo hints;

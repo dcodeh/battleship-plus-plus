@@ -7,8 +7,8 @@
 // proxy, which communicates with the client's model proxy over the network.
 // /////////////////////////////////////////////////////////////////////////////
 
-#ifndef "MODELLISTENER_H"
-#define "MODELLISTENER_H"
+#ifndef MODELLISTENER_H
+#define MODELLISTENER_H
 #include "Common.h"
 
 class ModelListener {
@@ -45,6 +45,6 @@ class ModelListener {
 
     // GAMEPLAY MESSAGES
         // TODO DCB fill these in
-}
+};
 
 #endif 

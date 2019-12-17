@@ -6,41 +6,28 @@
 // storing game state.
 // /////////////////////////////////////////////////////////////////////////////
 
-#ifndef "MODEL_H"
-#define "MODEL_H"
+#ifndef MODEL_H
+#define MODEL_H
 #include "ViewListener.h"
 #include "ModelListener.h"
 #include <mutex>
 #include <vector>
 
 // Monitor mutex object to prevent multiple entries into the monitor.
-mutex _mutex;
 
 class Model : public ViewListener {
 
     private:
-        std::vector<ModelListener> m_ModelListeners;
+        std::vector<ModelListener *> m_ModelListeners;
+        std::mutex _mutex;
 
     public:
-        /**
-          * Default constructor...Do nothing :)
-          */
-        Model(void) {
-        }
-
-        /**
-          * Default destructor...Do nothing :)
-          * TODO DCB Do I need to destroy the m_ModelListeners object?
-          */
-        ~Model(void) {
-        }
-
         /**
           * Adds a new model listener to the game.
           *
           * @param v The ModelListener object to hold on to
           */
-        void register_listener(ModelListener v);
+        void register_listener(ModelListener *v);
 
         // abstract parent functions implemented by this class:
         /// Tell ViewListener about the client joining the game.
@@ -52,5 +39,5 @@ class Model : public ViewListener {
 
         /// Rage quit
         void quit();
-}
+};
 #endif

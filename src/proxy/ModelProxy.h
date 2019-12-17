@@ -5,8 +5,8 @@
 // This file exports all of the functions implemented by the ModelProxy class.
 // /////////////////////////////////////////////////////////////////////////////
 
-#ifndef "MODEL_PROXY_H"
-#define "MODEL_PROXY_H"
+#ifndef MODEL_PROXY_H
+#define MODEL_PROXY_H
 
 #include <thread>
 #include "ModelProxy.h"
@@ -42,6 +42,6 @@ class ModelProxy : public ViewListener {
         void quit();
 
         void set_listener(ModelListener v);
-}
+};
 
 #endif

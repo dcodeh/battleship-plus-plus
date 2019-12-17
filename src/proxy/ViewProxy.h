@@ -5,8 +5,8 @@
 // This file exports all of the functions that the ViewProxy class implements.
 // /////////////////////////////////////////////////////////////////////////////
 
-#ifndef "VIEWPROXY_H"
-#define "VIEWPROXY_H"
+#ifndef VIEWPROXY_H
+#define VIEWPROXY_H
 
 #include "ModelListener.h"
 #include "ViewListener.h"
@@ -43,6 +43,6 @@ class ViewProxy : public ModelListener {
         void err(char *msg);
 
         void set_listener(ViewListener m);
-}
+};
 
 #endif

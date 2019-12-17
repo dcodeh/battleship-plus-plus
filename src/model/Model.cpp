@@ -14,27 +14,27 @@
 /**
   * Adds a new model listener to the game.
   */
-void Model::register_listener(ModelListener v) {
-    unique_lock<mutex> lock (_mutex);
+void Model::register_listener(ModelListener *v) {
+    std::unique_lock<std::mutex> lock (_mutex);
     m_ModelListeners.push_back(v);
-    v.info("You've been successfully connected.");
-    v.info("Goodbye");
-    v.quit();
+    char infomsg[] = "You've been successfully connected.";
+    v->info(infomsg);
+    v->quit();
 }
 
 void Model::join(char *name, char *ship_name, ShipType ship_type, 
                  uint8_t fleet) {
-    unique_lock<mutex> lock (_mutex);
+    std::unique_lock<std::mutex> lock (_mutex);
     printf("Captain %s of %s (type %d) joined fleet %d\n", name, ship_name,
            ship_type, fleet);
 }
 
 void Model::version(char *ver_string) {
-    unique_lock<mutex> lock (_mutex);
+    std::unique_lock<std::mutex> lock (_mutex);
     printf("version %s\n", ver_string);
 }
 
 void Model::quit() {
-    unique_lock<mutex> lock (_mutex);
+    std::unique_lock<std::mutex> lock (_mutex);
     printf("goodbye cruel world\n");
 }
