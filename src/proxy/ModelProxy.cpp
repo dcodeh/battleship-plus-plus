@@ -24,16 +24,16 @@ void ModelProxy::quit() {
     printf("die\n");
 }
 
-void ModelProxy::set_listener(ModelListener v) {
+void ModelProxy::set_listener(ModelListener *v) {
     m_listener = v;
-    m_listener_thread = new std::thread(listen_for_messages);
+    m_listener_thread = new std::thread(listen_for_messages, m_sockfd);
 }
 
-void ModelProxy::listen_for_messages() {
+void ModelProxy::listen_for_messages(int sockfd) {
     char buf[BUFSZ];
     int num_bytes;
     while (true) {
-        if((num_bytes = recv(m_sockfd, buf, 1, 0)) == -1) {
+        if((num_bytes = recv(sockfd, buf, 1, 0)) == -1) {
             perror("ModelProxy recv");
         }
 
@@ -43,7 +43,7 @@ void ModelProxy::listen_for_messages() {
                 break;
 
             default:
-                printtf("Unsupported message received\n");
+                printf("Unsupported message received\n");
                 break;
         }
     }

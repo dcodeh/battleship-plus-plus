@@ -24,6 +24,7 @@
 #include "ModelListener.h"
 #include "Model.h"
 #include "ViewListener.h"
+#include "ViewProxy.h"
 #include "Common.h"
 
 void sigchld_handler(int s) {
@@ -43,6 +44,7 @@ int main (int argc, char ** argv) {
     }
 
     Model m();
+    ViewProxy vp();
     printf("Created a new model object...\n");
 
     // TODO DCB remove this later...

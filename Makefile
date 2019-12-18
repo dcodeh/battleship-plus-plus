@@ -12,18 +12,20 @@ BUILD       := ./build
 OBJ_DIR     := $(BUILD)/obj
 SRV_TARGET  := bpp_server
 CLT_TARGET  := bpp_client
-INCLUDE     := -Isrc/common/ -Isrc/controller -Isrc/model
+INCLUDE     := -Isrc/common/ -Isrc/controller -Isrc/model -Isrc/proxy
 COMMON_SRC  := $(wildcard src/common/*.cpp)
 CLT_SRC     := $(wildcard src/client/*.cpp)
 SRV_SRC     := $(wildcard src/serv/*.cpp)
 CTRL_SRC    := $(wildcard src/controller/*.cpp)
 MODEL_SRC   := $(wildcard src/model/*.cpp)
+VP_SRC      := $(wildcard src/proxy/*.cpp)
 
 SRV_OBJECTS     := $(SRV_SRC:%.cpp=$(OBJ_DIR)/%.o)
 CLT_OBJECTS     := $(CLT_SRC:%.cpp=$(OBJ_DIR)/%.o)
 COMMON_OBJECTS  := $(COMMON_SRC:%.cpp=$(OBJ_DIR)/%.o)
 CTRL_OBJECTS    := $(CTRL_SRC:%.cpp=$(OBJ_DIR)/%.o)
 MODEL_OBJECTS   := $(MODEL_SRC:%.cpp=$(OBJ_DIR)/%.o)
+VP_OBJECTS      := $(VP_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 all: build $(SRV_TARGET) $(CLT_TARGET)
 
@@ -34,7 +36,7 @@ $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 
-$(SRV_TARGET): $(SRV_OBJECTS) $(CTRL_OBJECTS) $(COMMON_OBJECTS) $(MODEL_OBJECTS)
+$(SRV_TARGET): $(SRV_OBJECTS) $(CTRL_OBJECTS) $(COMMON_OBJECTS) $(MODEL_OBJECTS) $(VP_OBJECTS)
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $(SRV_TARGET) $(SRV_OBJECTS) \
         $(COMMON_OBJECTS)

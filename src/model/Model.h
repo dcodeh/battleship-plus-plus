@@ -13,12 +13,12 @@
 #include <mutex>
 #include <vector>
 
-// Monitor mutex object to prevent multiple entries into the monitor.
-
 class Model : public ViewListener {
 
     private:
         std::vector<ModelListener *> m_ModelListeners;
+
+        // Monitor mutex object to prevent multiple entries into the monitor.
         std::mutex _mutex;
 
     public:

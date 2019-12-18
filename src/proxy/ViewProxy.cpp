@@ -28,17 +28,17 @@ void ViewProxy::err(char *msg) {
     printf("err %s\n", msg);
 }
 
-void ViewProxy::set_listener(ViewListener m) {
+void ViewProxy::set_listener(ViewListener *m) {
     m_listener = m;
-    m_listener_thread = new std::thread(listen_for_messages);
+    m_listener_thread = new std::thread(listen_for_messages, m_sockfd);
 }
 
-void ViewProxy::listen_for_messages() {
+void ViewProxy::listen_for_messages(int sockfd) {
     char buf[BUFSZ];
     int num_bytes;
     while (true) {
         // read a byte
-        if ((num_bytes = recv(m_sockfd, buf, 1, 0)) == -1) {
+        if ((num_bytes = recv(sockfd, buf, 1, 0)) == -1) {
             perror("ViewProxy recv");
         }
 

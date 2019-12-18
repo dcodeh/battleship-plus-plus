@@ -17,10 +17,10 @@ class ViewProxy : public ModelListener {
 
     private:
         int m_sockfd;
-        ViewListener m_listener;
+        ViewListener *m_listener;
         std::thread *m_listener_thread;
 
-        void listen_for_messages();
+        static void listen_for_messages(int sockfd);
 
     public:
         ViewProxy(int socket_fd) {
@@ -42,7 +42,7 @@ class ViewProxy : public ModelListener {
 
         void err(char *msg);
 
-        void set_listener(ViewListener m);
+        void set_listener(ViewListener *m);
 };
 
 #endif
