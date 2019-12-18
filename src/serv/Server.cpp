@@ -21,10 +21,10 @@
 #include <netdb.h>
 #include <unistd.h>
 
+#include "ViewProxy.h"
 #include "Model.h"
 #include "ModelListener.h"
 #include "ViewListener.h"
-#include "ViewProxy.h"
 #include "Common.h"
 
 void sigchld_handler(int s) {

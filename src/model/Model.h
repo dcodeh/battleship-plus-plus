@@ -22,6 +22,8 @@ class Model : public ViewListener {
         std::mutex _mutex;
 
     public:
+        Model(){}
+        ~Model(){}
         /**
           * Adds a new model listener to the game.
           *
@@ -29,15 +31,18 @@ class Model : public ViewListener {
           */
         void register_listener(ModelListener *v);
 
-        // abstract parent functions implemented by this class:
-        /// Tell ViewListener about the client joining the game.
-        void join(char *name, char *ship_name, ShipType ship_type,
-                  uint8_t fleet);
+        void join(char *name, char *ship_name, ShipType ship_type, 
+                          uint8_t fleet);
 
-        /// Inform the client of the server version
+        /**
+          * Report the client version to determine compatibility.
+          * @param ver_string The Version String e.g. 0.1a or 3.14.6
+          */
         void version(char *ver_string);
 
-        /// Rage quit
+        /**
+          * Report that a client is quitting.
+          */
         void quit();
 };
 #endif

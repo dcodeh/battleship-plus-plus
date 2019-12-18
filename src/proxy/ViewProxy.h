@@ -23,16 +23,9 @@ class ViewProxy : public ModelListener {
         static void listen_for_messages(int sockfd);
 
     public:
-        ViewProxy(int socket_fd) {
-            m_sockfd = socket_fd;
-            m_listener_thread = NULL;
-        }
+        ViewProxy(int socket_fd);
 
-        ~ViewProxy() {
-            if (m_listener_thread != NULL) {
-                delete m_listener_thread;
-            }
-        }
+        ~ViewProxy();
 
         void version (char *ver_string);
 

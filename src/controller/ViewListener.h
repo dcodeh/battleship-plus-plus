@@ -16,6 +16,7 @@
 class ViewListener {
 
     public:
+        ViewListener(){}
         /**
           * Virtual destructor...
           */

@@ -12,6 +12,17 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
+ViewProxy::ViewProxy(int socket_fd) {
+    m_sockfd = socket_fd;
+    m_listener_thread = NULL;
+}
+
+ViewProxy::~ViewProxy() {
+    if (m_listener_thread != NULL) {
+        delete m_listener_thread;
+    }
+}
+
 void ViewProxy::version(char *ver_string) {
     printf("send version %s\n", ver_string);
 }
