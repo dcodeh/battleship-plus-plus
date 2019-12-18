@@ -11,25 +11,25 @@
 #include <mutex>
 
 void View::version(char *ver_string) {
-    unique_lock<mutex> lock (_mutex);
+    std::unique_lock<std::mutex> lock (_mutex);
     printf("version %s\n", ver_string);
 }
 
 void View::quit() {
-    unique_lock<mutex> lock (_mutex);
-    print("die\n");
+    std::unique_lock<std::mutex> lock (_mutex);
+    printf("die\n");
 }
 
 void View::info(char *msg) {
-    unique_lock<mutex> lock (_mutex);
+    std::unique_lock<std::mutex> lock (_mutex);
     printf("info %s\n", msg);
 }
 
 void View::err(char *msg) {
-    unique_lock<mutex> lock (_mutex);
+    std::unique_lock<std::mutex> lock (_mutex);
     printf("err %s\n", msg);
 }
 
-void View::set_listener(ViewListener m) {
+void View::set_listener(ViewListener *m) {
     m_listener = m;
 }

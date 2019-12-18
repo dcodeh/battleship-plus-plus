@@ -13,13 +13,12 @@
 #include "ViewListener.h"
 #include <mutex>
 
-mutex _mutex;
-
 class View : public ModelListener {
 
 
     private:
-        ViewListener m_listener;
+        ViewListener *m_listener;
+        std::mutex _mutex;
     public:
         /** 
           * Default Constructor...
@@ -42,7 +41,7 @@ class View : public ModelListener {
 
         void err(char *msg);
 
-        void set_listener(ViewListener m);
-}
+        void set_listener(ViewListener *m);
+};
 
 #endif
