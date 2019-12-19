@@ -13,12 +13,10 @@
 
 class ModelListener {
 
+    protected:
+        ModelListener() {}
+        virtual ~ModelListener() {}
     public:
-        ModelListener(){}
-        /**
-          * Virtual destructor...
-          */
-        virtual ~ModelListener() = 0;
     // ADMINISTRATIVE MESSAGES
         /**
           * Report the server version to determine compatibility.

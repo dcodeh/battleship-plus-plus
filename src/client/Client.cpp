@@ -76,10 +76,10 @@ int main (int argc, char **argv) {
 
     freeaddrinfo(servinfo);
     
-    View view();
-    ModelProxy proxy(sockfd);
-    view.set_listener(&proxy);
-    proxy.set_listener(&view);
+    View *view = new View();
+    ViewListener *proxy = new ModelProxy(sockfd);
+    view -> set_listener(proxy);
+    ((ModelProxy *) proxy) -> set_listener(view);
 
     close(sockfd);
     return EXIT_SUCCESS;

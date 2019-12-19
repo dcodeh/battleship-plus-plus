@@ -15,13 +15,10 @@
 
 class ViewListener {
 
+    protected:
+        ViewListener() {}
+        virtual ~ViewListener() {}
     public:
-        ViewListener(){}
-        /**
-          * Virtual destructor...
-          */
-        virtual ~ViewListener() = 0;
-
     // ADMINISTRATIVE MESSAGES
         /**
           * Tell the ViewListener about the client joining the game.

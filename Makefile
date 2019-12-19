@@ -7,7 +7,7 @@
 
 CXX         := -g++
 CXXFLAGS    := -pedantic-errors -Wall -Wextra -Werror
-LDFLAGS     := 
+LDFLAGS     := -lpthread
 BUILD       := ./build
 OBJ_DIR     := $(BUILD)/obj
 SRV_TARGET  := bpp_server
