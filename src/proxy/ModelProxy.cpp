@@ -37,14 +37,16 @@ void ModelProxy::listen_for_messages(int sockfd) {
             perror("ModelProxy recv");
         }
 
-        switch (buf[0]) {
-            case 'V':
-                printf("Version Messages received\n");
-                break;
+        if (num_bytes > 0) {
+            switch (buf[0]) {
+                case 'V':
+                    printf("Version Messages received\n");
+                    break;
 
-            default:
-                printf("Unsupported message received\n");
-                break;
+                default:
+                    printf("Unsupported message received\n");
+                    break;
+            }
         }
     }
 }

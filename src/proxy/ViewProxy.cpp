@@ -53,14 +53,16 @@ void ViewProxy::listen_for_messages(int sockfd) {
             perror("ViewProxy recv");
         }
 
-        // decode it
-        switch (buf[0]) {
-            case 'V':
-                printf("Version Message received\n");
-                break;
-            default:
-                printf("Unsupported message received\n.");
-                break;
+        if (num_bytes > 0) {
+            // decode it
+            switch (buf[0]) {
+                case 'V':
+                    printf("Version Message received\n");
+                    break;
+                default:
+                    printf("Unsupported message received\n");
+                    break;
+            }
         }
     }
 }
