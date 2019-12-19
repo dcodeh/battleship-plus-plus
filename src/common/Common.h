@@ -10,6 +10,7 @@
 #define COMMON_H
 
 #include <sys/socket.h>
+#include <stdint.h>
 
 /**
   * Get the in address from a sockaddr struct.
@@ -21,5 +22,13 @@ void *get_in_addr(struct sockaddr *sa);
 enum ShipType {battleship, destroyer, cargo_ship, frigate, submarine,
                aircraft_carrier, cruiser, repair_ship, minesweeper, semi_sub,
                tug, radio_ship};
+
+uint8_t send_str_msg_d(int sockfd, const char byte, const char *msg, const char *debug);
+
+uint8_t send_str_msg(int sockfd, const char byte, const char *msg);
+
+uint8_t send_byte_d(int sockfd, const char byte, const char *debug);
+
+uint8_t send_byte(int sockfd, const char byte);
 
 #endif

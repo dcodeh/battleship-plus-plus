@@ -8,7 +8,9 @@
 // /////////////////////////////////////////////////////////////////////////////
 
 #include "ViewProxy.h"
+#include "Common.h"
 #include <thread>
+#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 
@@ -24,19 +26,26 @@ ViewProxy::~ViewProxy() {
 }
 
 void ViewProxy::version(char *ver_string) {
-    printf("send version %s\n", ver_string);
+    const char *debug = "ViewProxy Version";
+    send_str_msg_d(m_sockfd, 'V', ver_string, debug);
 }
 
 void ViewProxy::quit() {
     printf("quit\n");
+    const char *debug = "ViewProxy Quit";
+    send_byte_d(m_sockfd, 'Q', debug);
 }
 
 void ViewProxy::info(char *msg) {
     printf("info %s\n", msg);
+    const char *debug = "ViewProxy Info";
+    send_str_msg_d(m_sockfd, ':', msg, debug);
 }
 
 void ViewProxy::err(char *msg) {
     printf("err %s\n", msg);
+    const char *debug = "ViewProxy Err";
+    send_str_msg_d(m_sockfd, '~', msg, debug);
 }
 
 void ViewProxy::set_listener(ViewListener *m) {
