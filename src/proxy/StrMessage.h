@@ -7,10 +7,11 @@
 // based on their lengths.
 // /////////////////////////////////////////////////////////////////////////////
 
-#ifndef MESSAGE_H
-#define MESSAGE_H
+#ifndef STRMESSAGE_H
+#define STRMESSAGE_H
 
 #include "Message.h"
+#include <stdint.h>
 
 class StrMessage : public Message {
 
