@@ -47,7 +47,7 @@ void ModelProxy::listen_for_messages(int sockfd) {
         if (num_bytes > 0) {
             switch (buf[0]) {
                 case 'V':
-                    printf("Version Messages received\n");
+                    printf("Version Message received\n");
                     break;
 
                 default:

@@ -1,3 +1,11 @@
+Message:
+    ByteMessage
+    StrMessage
+    uint8Message
+    uint16Message
+    CoordinateMessage
+    JoinMessage
+
 ViewListener: (Messages passed to the Model)
 - Administrative Messages:
     - void join(char * name, char * ship_name, uint8_t ship_class, uint8_t fleet) 
