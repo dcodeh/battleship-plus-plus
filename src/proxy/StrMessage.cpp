@@ -12,6 +12,7 @@
 
 // Note: strings are null terminated
 StrMessage::StrMessage(char type, uint8_t num_strings, char **str_pointers) {
+    // TODO DCB this is bad inheritance
     m_num_strings = num_strings;
     m_str_pointers = str_pointers;
 

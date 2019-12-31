@@ -40,6 +40,7 @@ void ModelProxy::listen_for_messages(int sockfd) {
     char buf[BUFSZ];
     int num_bytes;
     while (true) {
+        printf("Hellow from modelproxy.\n");
         if((num_bytes = recv(sockfd, buf, 1, 0)) == -1) {
             perror("ModelProxy recv");
         }

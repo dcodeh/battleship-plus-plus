@@ -13,6 +13,8 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include "StrMessage.h"
+#include "ByteMessage.h"
 
 ViewProxy::ViewProxy(int socket_fd) {
     m_sockfd = socket_fd;
@@ -26,20 +28,21 @@ ViewProxy::~ViewProxy() {
 }
 
 void ViewProxy::version(char *ver_string) {
-    const char *debug = "ViewProxy Version";
-    send_str_msg_d(m_sockfd, 'V', ver_string, debug);
+    Message *m = new StrMessage('V', (uint8_t) 1 /* num_strings */, &ver_string);
+    m->transmit(m_sockfd);
+    delete m;
 }
 
 void ViewProxy::quit() {
-    printf("quit\n");
-    const char *debug = "ViewProxy Quit";
-    send_byte_d(m_sockfd, 'Q', debug);
+    Message *m = new ByteMessage('Q');
+    m->transmit(m_sockfd);
+    delete m;
 }
 
 void ViewProxy::info(char *msg) {
-    printf("info %s\n", msg);
-    const char *debug = "ViewProxy Info";
-    send_str_msg_d(m_sockfd, ':', msg, debug);
+    Message *m = new StrMessage(':', (uint8_t) 1 /* num_strings */, &msg);
+    m->transmit(m_sockfd);
+    delete m;
 }
 
 void ViewProxy::err(char *msg) {
