@@ -81,6 +81,11 @@ int main (int argc, char **argv) {
     view -> set_listener(proxy);
     ((ModelProxy *) proxy) -> set_listener(view);
 
+    // TODO DCB remove this eventually?
+    while (view->alive()) {
+        continue;
+    }
+
     close(sockfd);
     return EXIT_SUCCESS;
 }

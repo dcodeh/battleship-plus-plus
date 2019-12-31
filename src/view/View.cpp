@@ -18,6 +18,7 @@ void View::version(char *ver_string) {
 void View::quit() {
     std::unique_lock<std::mutex> lock (_mutex);
     printf("die\n");
+    m_alive = false;
 }
 
 void View::info(char *msg) {
@@ -32,4 +33,8 @@ void View::err(char *msg) {
 
 void View::set_listener(ViewListener *m) {
     m_listener = m;
+}
+
+bool View::alive() {
+    return m_alive;
 }

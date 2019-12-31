@@ -17,8 +17,9 @@
 void Model::register_listener(ModelListener *v) {
     std::unique_lock<std::mutex> lock (_mutex);
     m_ModelListeners.push_back(v);
-    char infomsg[] = "You've been successfully connected.";
-    v->info(infomsg);
+    printf("ModelListener registered\n");
+    // char infomsg[] = "You've been successfully connected.";
+    // v->info(infomsg);
     v->quit();
 }
 

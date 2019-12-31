@@ -12,6 +12,7 @@
 #include "ModelListener.h"
 #include "ViewListener.h"
 #include <mutex>
+#include <stdbool.h>
 
 class View : public ModelListener {
 
@@ -19,11 +20,13 @@ class View : public ModelListener {
     private:
         ViewListener *m_listener;
         std::mutex _mutex;
+        bool m_alive;
     public:
         /** 
           * Default Constructor...
           */
         View() {
+            m_alive = true;
         }
 
         /**
@@ -42,6 +45,8 @@ class View : public ModelListener {
         void err(char *msg);
 
         void set_listener(ViewListener *m);
+
+        bool alive();
 };
 
 #endif

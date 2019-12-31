@@ -57,6 +57,7 @@ void ViewProxy::set_listener(ViewListener *m) {
 }
 
 void ViewProxy::listen_for_messages(int sockfd) {
+    printf("ViewProxy thread started...\n");
     char buf[BUFSZ];
     int num_bytes;
     while (true) {
