@@ -83,6 +83,7 @@ int main (int argc, char **argv) {
 
     // TODO DCB remove this eventually?
     while (view->alive()) {
+        usleep(15000);
         continue;
     }
 

@@ -51,6 +51,10 @@ void ModelProxy::listen_for_messages(int sockfd) {
                     printf("Version Message received\n");
                     break;
 
+                case 'Q':
+                    printf("Quit Message received\n");
+                    break;
+
                 default:
                     printf("Unsupported message received\n");
                     break;

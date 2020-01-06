@@ -34,6 +34,7 @@ void ViewProxy::version(char *ver_string) {
 }
 
 void ViewProxy::quit() {
+    printf("Sending quit message\n");
     Message *m = new ByteMessage('Q');
     m->transmit(m_sockfd);
     delete m;
