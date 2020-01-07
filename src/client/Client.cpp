@@ -76,8 +76,6 @@ int main (int argc, char **argv) {
 
     freeaddrinfo(servinfo);
     
-    printf("waiting for the sparks to fly...\n");
-    usleep(1500000);
     View *view = new View();
     ViewListener *proxy = new ModelProxy(sockfd);
     view -> set_listener(proxy);
