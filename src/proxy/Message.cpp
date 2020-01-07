@@ -27,7 +27,11 @@ Message::~Message() {
 
 uint32_t Message::transmit(int sockfd) {
     if (m_initialized) {
-        int sent = send(sockfd, (char *) m_data, m_msg_len, 0);
+        int sent = 0;
+        // send the type of the message
+        sent += send(sockfd, &m_type, 1, 0);
+        sent += send(sockfd, (char *) m_data, m_msg_len, 0);
+        printf("Message send %d bytes\n", sent);
         if (sent == -1) {
             perror(m_type + " failed to send");
             return 0;

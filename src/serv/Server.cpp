@@ -138,6 +138,8 @@ int main (int argc, char ** argv) {
         // }
         // close(new_fd); // paren't doesn't use this
 
+        printf("Waiting for the magic to happen\n");
+        usleep(1500000);
         ModelListener *proxy = new ViewProxy(new_fd);
         model->register_listener(proxy);
         ((ViewProxy *) proxy)->set_listener(model);
