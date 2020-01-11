@@ -10,9 +10,10 @@
 #include <stdbool.h>
 #include <string.h>
 
-// Note: strings are null terminated
+/** Create a new String message object. */
 StrMessage::StrMessage(char type, uint8_t num_strings, char **str_pointers) {
-    // TODO DCB this is bad inheritance
+    // Note: strings are null terminated
+    // TODO DCB this is bad inheritance...consider redesigning this whole thing
     m_num_strings = num_strings;
     m_str_pointers = str_pointers;
 
@@ -38,15 +39,18 @@ StrMessage::StrMessage(char type, uint8_t num_strings, char **str_pointers) {
     m_data = (void *) data;
 }
 
+/** Create an empty String Message object */
 StrMessage::StrMessage() {
     m_initialized = false;
 }
 
+/** Drop a nuke on your string message */
 StrMessage::~StrMessage() {
     delete (char *)m_data;
     delete m_str_pointers;
 }
 
+/** Break a blob of data into the number of strings that it represents. */
 uint32_t StrMessage::decode(char type, uint16_t message_length, void *data) {
     uint32_t total_msg_len = Message::decode(type, message_length, data);
     char *ptr = (char *) &data;
@@ -75,6 +79,7 @@ uint32_t StrMessage::decode(char type, uint16_t message_length, void *data) {
     return total_msg_len;
 }
 
+/** Provide a way to access strings once they're parsed from a received msg. */
 uint8_t StrMessage::get_string(uint8_t index, char *dest) {
     if (index < m_num_strings) {
         uint8_t len = m_str_lengths[index];
