@@ -48,8 +48,6 @@ void ViewProxy::info(char *msg) {
 
 void ViewProxy::err(char *msg) {
     printf("err %s\n", msg);
-    const char *debug = "ViewProxy Err";
-    send_str_msg_d(m_sockfd, '~', msg, debug);
 }
 
 void ViewProxy::set_listener(ViewListener *m) {

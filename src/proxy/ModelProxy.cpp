@@ -13,22 +13,16 @@
 
 void ModelProxy::version(char *ver_string) {
     printf("version %s\n", ver_string);
-    const char *debug = "ModelProxy Version";
-    send_str_msg_d(m_sockfd, 'V', ver_string, debug);
 }
 
 void ModelProxy::join(char *name, char *ship_name, ShipType ship_type,
                       uint8_t fleet) {
     printf("Captain %s of the %s (type %d) joined fleet %d\n", name, ship_name,
            ship_type, fleet);
-    // const char *debug = "ModelProxy Join";
-    // TODO DCB come up with something 
 }
 
 void ModelProxy::quit() {
     printf("die\n");
-    const char *debug = "ModelProxy Quit";
-    send_byte_d(m_sockfd, 'Q', debug);
 }
 
 void ModelProxy::set_listener(ModelListener *v) {
