@@ -23,6 +23,7 @@ void Model::register_listener(ModelListener *v) {
     v->quit();
 }
 
+/** Report information required to join a game */
 void Model::join(char *name, char *ship_name, ShipType ship_type, 
                  uint8_t fleet) {
     std::unique_lock<std::mutex> lock (_mutex);
@@ -30,11 +31,13 @@ void Model::join(char *name, char *ship_name, ShipType ship_type,
            ship_type, fleet);
 }
 
+/** Report the client version to the server */
 void Model::version(char *ver_string) {
     std::unique_lock<std::mutex> lock (_mutex);
     printf("version %s\n", ver_string);
 }
 
+/** Report that the client is quitting (maybe due to rage). */
 void Model::quit() {
     std::unique_lock<std::mutex> lock (_mutex);
     printf("goodbye cruel world\n");

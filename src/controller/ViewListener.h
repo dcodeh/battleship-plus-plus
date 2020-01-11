@@ -16,8 +16,11 @@
 class ViewListener {
 
     protected:
+        // Note: this is an interface
+        // TODO DCB Does this need to be this way?
         ViewListener() {}
         virtual ~ViewListener() {}
+
     public:
     // ADMINISTRATIVE MESSAGES
         /**
