@@ -20,6 +20,18 @@
 #include "ModelProxy.h"
 #include "View.h"
 
+/**
+  * This is the entry point for the Client program. It sets up the network 
+  * socket, and configures the view, and model proxy for network communication.
+  *
+  * Usage:
+  * $ ./bpp_client ip port
+  * For example: ./bpp_client 127.0.0.1 52441 starts a client that will talk 
+  * to a server running on the local machine, port 52441.
+  *
+  * @oaram argc The number of command line arguments (requires 2)
+  * @param argv The command line arguments in string form.
+  */
 int main (int argc, char **argv) {
     // check command line arguments
     const char *ip;
@@ -65,6 +77,7 @@ int main (int argc, char **argv) {
         break;
     }
 
+    // We go in this if block if none of the interfaces are valid.
     if (p == NULL) {
         fprintf(stderr, "Failed to connect to server.\n");
         return EXIT_FAILURE;
@@ -74,6 +87,8 @@ int main (int argc, char **argv) {
     inet_ntop(p -> ai_family, get_in_addr((struct sockaddr *) p -> ai_addr), s, sizeof(s));
     printf("Connecting to BPP server %s\n", s);
 
+    // Free up the space used to store the server's address information. Now
+    // we'll talk through the socket file descriptor we got.
     freeaddrinfo(servinfo);
     
     View *view = new View();
@@ -81,12 +96,14 @@ int main (int argc, char **argv) {
     view -> set_listener(proxy);
     ((ModelProxy *) proxy) -> set_listener(view);
 
-    // TODO DCB remove this eventually?
     while (view->alive()) {
-        usleep(15000);
+        // twiddle your thumbs...
+        usleep(15000);  //      ...slowly
         continue;
     }
 
+    // TODO DCB make sure this actually happens once the messages are hooked up
+    printf("View exited...closing socket.\n");
     close(sockfd);
     return EXIT_SUCCESS;
 }
