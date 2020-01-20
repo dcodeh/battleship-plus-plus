@@ -41,9 +41,9 @@ void ViewProxy::version(char *ver_string) {
 /** Tell the client they should quit. */
 void ViewProxy::quit() {
     printf("Sending quit message\n");
-    // Message *m = new ByteMessage('Q');
-    // m->transmit(m_sockfd);
-    // delete m;
+    Message *m = new ByteMessage('Q');
+    m->transmit(m_sockfd);
+    delete m;
 }
 
 /** Tell the client some information */

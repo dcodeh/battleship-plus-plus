@@ -69,6 +69,7 @@ char Message::receive(int sockfd) {
             bufstart = buf + 1;
         }
     }
+    printf("Received type %c\n", type);
 
     recvdone = false;
     while (!recvdone) {
@@ -81,9 +82,10 @@ char Message::receive(int sockfd) {
             bufstart = buf + 2;
         }
     }
+    printf("Received size %d\n", len);
 
     recvdone = false;
-    while (!recvdone) {
+    while (!recvdone && len > 0) {
         num_bytes = recv(sockfd, bufstart, 1, 0);
         if (num_bytes < 0) {
             perror("Message recv data");
@@ -95,6 +97,7 @@ char Message::receive(int sockfd) {
             }
         }
     }
+    printf("Received data\n");
 
     m_type = type;
     m_msg_len = len;
