@@ -5,14 +5,16 @@
 // This header defines the Message base class functions.
 // Messages have the following format:
 // 
-//      XXXXXXXX SSSSSSSS SSSSSSSS [ Message Data ]
-//      ^ Type ^ ^ Size          ^ ^ Bytes ...... ^
+//      XXXXXXXX SSSSSSSS [ Message Data ]
+//      ^ Type ^ ^ Size ^ ^ Size Bytes.. ^
 // /////////////////////////////////////////////////////////////////////////////
 
 #ifndef MESSAGE_H
 #define MESSAGE_H
 #include <stdint.h>
 #include <stdbool.h>
+
+#define MAX_MSG_LEN 255
 
 class Message {
 
@@ -21,30 +23,14 @@ class Message {
           * The length of the message data to follow. This doesn't include the
           * byte or two used to specify the message type.
           */
-        uint16_t m_msg_len;
+        uint8_t m_msg_len;
         char m_type;
-        void *m_data; // the meaty good ness that everyone cares about
+        char *m_data; // the meaty goodness that everyone cares about
         bool m_initialized;
 
     public:
         /**
-          * Construct and initialize the protected data members. Do this
-          * for sending a message, then call send.
-          * TODO DCB Consider moving the initialization out of the constructor
-          * because this makes it difficult for child classes to get their
-          * data formatted before calling the parent constructor in the
-          * initializer list.
-          *
-          * @param type A byte to mark what type of message follows, and thus 
-          *     how it should be decoded.
-          * @param message_length The amount of data being sent
-          * @param data The actual message--all message_length bytes of it.
-          */
-        Message(char type, uint16_t message_length, void *data);
-
-        /**
-          * Construct uninitialized data members. Do this for receiving a
-          * message, then call decode().
+          * Construct a message with blank contents.
           */
         Message();
 
@@ -64,14 +50,46 @@ class Message {
         uint32_t transmit(int sockfd);
 
         /**
-          * Decode a message sent over the network.
-          *
-          * @param type The type of message that was received
-          * @param message_length The number of bytes in the message
-          * @param data What the message says.
-          * @return The number of bytes read.
+          * Use this function to receive a message and store the data inside 
+          * this object. This will block until a whole message is received.
+          * The internal state of this object will be overwritten.
+          * 
+          * @param sockfd The Socket to listen for a message on
+          * @return the type of the message received
           */
-        uint32_t decode(char type, uint16_t message_length, void *data);
+        char receive(int sockfd);
+
+        /**
+          * @return the type byte of this message.
+          */
+        char get_msg_type();
+
+
+        /**
+          * @return the length of the data buffer
+          */
+        uint8_t get_msg_size();
+
+        /**
+          * Change the internal state of this message.
+          *
+          * @param type The type character of this message
+          * @param msg_len The length of the message
+          * @param data A pointer to the data buffer for this message.
+          */
+        void initialize(char type, uint8_t msg_len, char *data);
+
+    private:
+        // TODO DCB add functions here to return child objects constructed
+        // by passing in a Message Object.
+        
+        /**
+          * Copy the data buffer somewhere else.
+          *
+          * @param dest A destination buffer to copy the data buffer to
+          * @return the number of bytes copied
+          */
+        uint8_t get_data_buffer(char *dest);
 };
 
 #endif
