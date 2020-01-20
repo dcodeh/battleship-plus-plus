@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdio.h>
 
 void StrMessage::initialize(char type, uint8_t num_strings, 
         char **str_pointers) {
@@ -21,6 +22,9 @@ void StrMessage::initialize(char type, uint8_t num_strings,
         total_len += strlen(str_pointers[i]);
     }
 
+    if (total_len > UINT8_MAX) {
+        printf("Warning: Strings are too long!\n");
+    }
     char *data = new char[total_len];
 
     char *tmp = data;

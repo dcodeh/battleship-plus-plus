@@ -48,10 +48,10 @@ void ViewProxy::quit() {
 
 /** Tell the client some information */
 void ViewProxy::info(char *msg) {
-    // Message *m = new StrMessage(':', (uint8_t) 1 /* num_strings */, &msg);
-    // m->transmit(m_sockfd);
-    // delete m;
-    printf("%s\n", msg);
+    Message *m = new StrMessage();
+    m->initialize(':', 1 /* num_strings*/, msg);
+    m->transmit(m_sockfd);
+    delete m;
 }
 
 /** Tell the client they did something wrong. */
