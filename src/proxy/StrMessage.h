@@ -24,16 +24,6 @@ class StrMessage : public Message {
         uint8_t *m_str_lengths;
 
     public:
-        /**
-          * Construct a new String message to be sent over the network.
-          *
-          * @param type The identifying message byte
-          * @param num_strings The number of strings to send in the body of the
-          *     message.
-          * @param str_pointers A pointer to all of the strings to be sent, one
-          *     right after the other.
-          */
-        StrMessage(char type, uint8_t num_strings, char **str_pointers);
 
         /**
           * Make an empty String Message. This can't be sent over the network
@@ -47,21 +37,13 @@ class StrMessage : public Message {
         ~StrMessage();
 
         /**
-          * Send the string(s) over the network.
-          *
-          * @param sockfd The socket file descriptor to use
-          * @return the number of bytes sent
-          */
-        uint32_t transmit(int sockfd);
-
-        /**
           * Make sense of a string message that came in over the network.
           *
           * @param type the type of message that was sent
           * @param message_length The total length of the blob that was received
           * @param data The nugget of goodness we want to break open.
           */
-        uint32_t decode(char type, uint16_t message_length, void *data);
+        uint32_t decode(uint16_t message_length, char *data);
 
         /**
           * Once a message has been received, get a pointer to the nth string
@@ -75,6 +57,17 @@ class StrMessage : public Message {
           * @return The length of the string that dest points to.
           */
         uint8_t get_string(uint8_t index, char *dest);
+         
+        /**
+          * Fill the message data with Strings.
+          *
+          * @param type The identifying message byte
+          * @param num_strings The number of strings to send in the body of the
+          *     message.
+          * @param str_pointers A pointer to all of the strings to be sent, one
+          *     right after the other.
+          */
+        void initialize(char type, uint8_t num_strings, char **str_pointers);
 };
 
 #endif

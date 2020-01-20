@@ -32,24 +32,26 @@ ViewProxy::~ViewProxy() {
 
 /** Send the version of the server to the client. */
 void ViewProxy::version(char *ver_string) {
-    Message *m = new StrMessage('V', (uint8_t) 1 /* num_strings */, &ver_string);
-    m->transmit(m_sockfd);
-    delete m;
+    // Message *m = new StrMessage('V', (uint8_t) 1 /* num_strings */, &ver_string);
+    // m->transmit(m_sockfd);
+    // delete m;
+    printf("%s\n", ver_string);
 }
 
 /** Tell the client they should quit. */
 void ViewProxy::quit() {
     printf("Sending quit message\n");
-    Message *m = new ByteMessage('Q');
-    m->transmit(m_sockfd);
-    delete m;
+    // Message *m = new ByteMessage('Q');
+    // m->transmit(m_sockfd);
+    // delete m;
 }
 
 /** Tell the client some information */
 void ViewProxy::info(char *msg) {
-    Message *m = new StrMessage(':', (uint8_t) 1 /* num_strings */, &msg);
-    m->transmit(m_sockfd);
-    delete m;
+    // Message *m = new StrMessage(':', (uint8_t) 1 /* num_strings */, &msg);
+    // m->transmit(m_sockfd);
+    // delete m;
+    printf("%s\n", msg);
 }
 
 /** Tell the client they did something wrong. */

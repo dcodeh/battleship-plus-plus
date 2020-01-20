@@ -10,10 +10,9 @@
 #include <stdbool.h>
 #include <string.h>
 
-/** Create a new String message object. */
-StrMessage::StrMessage(char type, uint8_t num_strings, char **str_pointers) {
+void StrMessage::initialize(char type, uint8_t num_strings, 
+        char **str_pointers) {
     // Note: strings are null terminated
-    // TODO DCB this is bad inheritance...consider redesigning this whole thing
     m_num_strings = num_strings;
     m_str_pointers = str_pointers;
 
@@ -23,7 +22,6 @@ StrMessage::StrMessage(char type, uint8_t num_strings, char **str_pointers) {
     }
 
     char *data = new char[total_len];
-    m_msg_len = total_len;
 
     char *tmp = data;
     for (uint8_t i = 0; i < num_strings; ++i) {
@@ -34,25 +32,22 @@ StrMessage::StrMessage(char type, uint8_t num_strings, char **str_pointers) {
         tmp += len;
     }
 
-    m_type = type;
-    m_msg_len = total_len;
-    m_data = (void *) data;
+    Message::initialize(type, total_len, data);
 }
 
 /** Create an empty String Message object */
-StrMessage::StrMessage() {
+StrMessage::StrMessage() : Message() {
     m_initialized = false;
 }
 
 /** Drop a nuke on your string message */
 StrMessage::~StrMessage() {
-    delete (char *)m_data;
-    delete m_str_pointers;
+    // TODO DCB Memory Leaks :)
 }
 
 /** Break a blob of data into the number of strings that it represents. */
-uint32_t StrMessage::decode(char type, uint16_t message_length, void *data) {
-    uint32_t total_msg_len = Message::decode(type, message_length, data);
+uint32_t StrMessage::decode(uint16_t message_length, char *data) {
+    uint8_t total_msg_len = Message::get_msg_size();
     char *ptr = (char *) &data;
     uint8_t num_strings = 0;
 

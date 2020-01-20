@@ -69,7 +69,7 @@ class Message {
           * @return the length of the data buffer
           */
         uint8_t get_msg_size();
-
+         
         /**
           * Change the internal state of this message.
           *
