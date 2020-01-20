@@ -13,6 +13,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include "Message.h"
 #include "StrMessage.h"
 #include "ByteMessage.h"
 
@@ -68,24 +69,17 @@ void ViewProxy::set_listener(ViewListener *m) {
   */
 void ViewProxy::listen_for_messages(int sockfd) {
     printf("ViewProxy thread started...\n");
-    char buf[BUFSZ];
-    int num_bytes;
     while (true) {
         // read a byte
-        if ((num_bytes = recv(sockfd, buf, 1, 0)) == -1) {
-            perror("ViewProxy recv");
-        }
-
-        if (num_bytes > 0) {
-            // decode it
-            switch (buf[0]) {
-                case 'V':
-                    printf("Version Message received\n");
-                    break;
-                default:
-                    printf("Unsupported message received\n");
-                    break;
-            }
+        Message *msg = new Message();
+        char type = msg->receive(sockfd);
+        switch (type) {
+            case 'V':
+                printf("Version Message received\n");
+                break;
+            default:
+                printf("Unsupported message received\n");
+                break;
         }
     }
 }

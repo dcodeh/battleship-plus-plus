@@ -8,9 +8,6 @@
 #include "ByteMessage.h"
 #include <stdlib.h>
 
-ByteMessage::ByteMessage(char type)  : Message(type, 0, NULL) {
-}
-
-ByteMessage::ByteMessage() : Message() {
-    m_initialized = false;
+ByteMessage::ByteMessage(char type) : Message() {
+    Message::initialize(type, 0, (char *) NULL);
 }

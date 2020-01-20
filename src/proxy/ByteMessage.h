@@ -19,8 +19,6 @@ class ByteMessage : public Message {
           * for sending a message, then call send.
           */
         ByteMessage(char type);
-
-        ByteMessage();
 };
 
 #endif

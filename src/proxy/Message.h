@@ -80,9 +80,6 @@ class Message {
         void initialize(char type, uint8_t msg_len, char *data);
 
     private:
-        // TODO DCB add functions here to return child objects constructed
-        // by passing in a Message Object.
-        
         /**
           * Copy the data buffer somewhere else.
           *

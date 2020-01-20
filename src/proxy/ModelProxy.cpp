@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include "Common.h"
+#include "Message.h"
 
 /** Send the version across the network to the remote Model */
 void ModelProxy::version(char *ver_string) {
@@ -36,28 +37,22 @@ void ModelProxy::set_listener(ModelListener *v) {
 
 /** Listen for incoming messages from the remote Model. */
 void ModelProxy::listen_for_messages(int sockfd) {
-    char buf[BUFSZ];
-    int num_bytes;
     while (true) {
         printf("Hellow from modelproxy.\n");
-        if((num_bytes = recv(sockfd, buf, 1, 0)) == -1) {
-            perror("ModelProxy recv");
-        }
+        Message *msg = new Message();
+        char type = msg->receive(sockfd);
+        switch (type) {
+            case 'V':
+                printf("Version Message received\n");
+                break;
 
-        if (num_bytes > 0) {
-            switch (buf[0]) {
-                case 'V':
-                    printf("Version Message received\n");
-                    break;
+            case 'Q':
+                printf("Quit Message received\n");
+                break;
 
-                case 'Q':
-                    printf("Quit Message received\n");
-                    break;
-
-                default:
-                    printf("Unsupported message received\n");
-                    break;
-            }
+            default:
+                printf("Unsupported message received\n");
+                break;
         }
     }
 }
