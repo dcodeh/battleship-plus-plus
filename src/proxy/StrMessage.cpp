@@ -47,18 +47,13 @@ StrMessage::StrMessage() : Message() {
     m_initialized = false;
 }
 
-/** Drop a nuke on your string message */
-StrMessage::~StrMessage() {
-    // TODO DCB Memory Leaks :)
-}
-
 /** Break a blob of data into the number of strings that it represents. */
-uint32_t StrMessage::decode(uint16_t message_length, char *data) {
-    uint8_t total_msg_len = Message::get_msg_size();
-    char *ptr = (char *) &data;
+StrMessage::StrMessage(Message const &m) : Message(m) {
+    uint8_t total_msg_len = m.get_msg_size();
+    char *ptr = m_data;
     uint8_t num_strings = 0;
 
-    while (ptr < (char *)data + message_length) {
+    while (ptr < m_data + total_msg_len) {
         uint8_t len = (uint8_t) *ptr;
         ++num_strings;
         ptr = ptr + len + 1;
@@ -68,7 +63,7 @@ uint32_t StrMessage::decode(uint16_t message_length, char *data) {
     m_str_pointers = new char *[m_num_strings];
     m_str_lengths = new uint8_t[m_num_strings];
 
-    ptr = (char *) &data;
+    ptr = m_data;
     for (uint8_t i = 0; i < m_num_strings; ++i) {
         uint8_t len = (uint8_t) *ptr;
         ++ptr;
@@ -78,7 +73,11 @@ uint32_t StrMessage::decode(uint16_t message_length, char *data) {
     }
 
     m_initialized = true;
-    return total_msg_len;
+}
+
+/** Drop a nuke on your string message */
+StrMessage::~StrMessage() {
+    // TODO DCB Memory Leaks :)
 }
 
 /** Provide a way to access strings once they're parsed from a received msg. */

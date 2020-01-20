@@ -32,18 +32,31 @@ class StrMessage : public Message {
         StrMessage();
 
         /**
+          * Decode a message object into a string object.
+          */
+        StrMessage(Message const&);
+
+        /**
+          * Parse a regular old message as string data.
+          *
+          * @param m the message to parse
+          */
+        StrMessage(Message *m);
+
+        /**
           * Murder a String Message in cold blood.
           */
         ~StrMessage();
 
-        /**
-          * Make sense of a string message that came in over the network.
-          *
-          * @param type the type of message that was sent
-          * @param message_length The total length of the blob that was received
-          * @param data The nugget of goodness we want to break open.
-          */
-        uint32_t decode(uint16_t message_length, char *data);
+        // TODO DCB Commented code :)
+        // /**
+        //   * Make sense of a string message that came in over the network.
+        //   *
+        //   * @param type the type of message that was sent
+        //   * @param message_length The total length of the blob that was received
+        //   * @param data The nugget of goodness we want to break open.
+        //   */
+        // uint32_t decode(uint16_t message_length, char *data);
 
         /**
           * Once a message has been received, get a pointer to the nth string

@@ -35,6 +35,11 @@ class Message {
         Message();
 
         /**
+          * Copy constructor
+          */
+        Message(Message const&);
+
+        /**
           * Don't need to do much to destruct a Message object...TODO DCB or 
           * do you?
           */
@@ -62,13 +67,13 @@ class Message {
         /**
           * @return the type byte of this message.
           */
-        char get_msg_type();
+        char get_msg_type() const;
 
 
         /**
           * @return the length of the data buffer
           */
-        uint8_t get_msg_size();
+        uint8_t get_msg_size() const;
          
         /**
           * Change the internal state of this message.
@@ -86,7 +91,12 @@ class Message {
           * @param dest A destination buffer to copy the data buffer to
           * @return the number of bytes copied
           */
-        uint8_t get_data_buffer(char *dest);
+        uint8_t get_data_buffer(char *dest) const;
+
+        /**
+          * @return true if the class is initialized.
+          */
+        bool get_initialized() const;
 };
 
 #endif

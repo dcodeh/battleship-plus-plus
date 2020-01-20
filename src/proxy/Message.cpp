@@ -21,6 +21,14 @@ Message::Message() {
     m_initialized = false;
 }
 
+Message::Message(Message const& m) {
+    m_msg_len = m.get_msg_size();
+    m_type = m.get_msg_type();
+    m_data = new char[m_msg_len];
+    m.get_data_buffer(m_data);
+    m_initialized = m.get_initialized();
+}
+
 /// Kill a message.
 Message::~Message() {
     if (m_initialized) {
@@ -111,11 +119,11 @@ char Message::receive(int sockfd) {
     return type;
 }
 
-char Message::get_msg_type() {
+char Message::get_msg_type() const {
     return m_type;
 }
 
-uint8_t Message::get_msg_size() {
+uint8_t Message::get_msg_size() const {
     return m_msg_len;
 }
 
@@ -130,7 +138,11 @@ void Message::initialize(char type, uint8_t msg_len, char *data) {
     m_initialized = true;
 }
 
-uint8_t Message::get_data_buffer(char *dest) {
+bool Message::get_initialized() const {
+    return m_initialized;
+}
+
+uint8_t Message::get_data_buffer(char *dest) const {
     if (m_initialized) {
         memcpy(dest, m_data, m_msg_len);
         return m_msg_len;
