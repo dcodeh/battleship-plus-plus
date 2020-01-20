@@ -49,7 +49,7 @@ void ViewProxy::quit() {
 /** Tell the client some information */
 void ViewProxy::info(char *msg) {
     Message *m = new StrMessage();
-    m->initialize(':', 1 /* num_strings*/, msg);
+    ((StrMessage *)m) ->initialize(':', 1 /* num_strings*/, &msg);
     m->transmit(m_sockfd);
     delete m;
 }

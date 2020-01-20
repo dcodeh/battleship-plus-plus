@@ -38,7 +38,6 @@ void ModelProxy::set_listener(ModelListener *v) {
 /** Listen for incoming messages from the remote Model. */
 void ModelProxy::listen_for_messages(int sockfd) {
     while (true) {
-        printf("Hellow from modelproxy.\n");
         Message *msg = new Message();
         char type = msg->receive(sockfd);
         switch (type) {

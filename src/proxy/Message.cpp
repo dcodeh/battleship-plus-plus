@@ -97,7 +97,6 @@ char Message::receive(int sockfd) {
             }
         }
     }
-    printf("Received data\n");
 
     m_type = type;
     m_msg_len = len;
@@ -106,6 +105,7 @@ char Message::receive(int sockfd) {
     }
     m_data = new char[m_msg_len];
     memcpy(m_data, buf + 2, m_msg_len); // skip type and size
+    printf("Received data %s\n", m_data);
 
     m_initialized = true;
     return type;

@@ -18,9 +18,12 @@ void StrMessage::initialize(char type, uint8_t num_strings,
     m_str_pointers = str_pointers;
 
     uint16_t total_len = num_strings;
+    printf("Strings:\n");
     for (uint8_t i = 0; i < num_strings; ++i) {
         total_len += strlen(str_pointers[i]);
+        printf("%s\n", str_pointers[i]);
     }
+    printf("\n");
 
     if (total_len > UINT8_MAX) {
         printf("Warning: Strings are too long!\n");
