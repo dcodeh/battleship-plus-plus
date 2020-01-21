@@ -64,5 +64,7 @@ void ModelProxy::listen_for_messages(int sockfd) {
                 printf("Unsupported message received\n");
                 break;
         }
+
+        delete msg;
     }
 }
