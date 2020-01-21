@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include "Common.h"
 #include "Message.h"
+#include "StrMessage.h"
 
 /** Send the version across the network to the remote Model */
 void ModelProxy::version(char *ver_string) {
@@ -50,8 +51,14 @@ void ModelProxy::listen_for_messages(int sockfd) {
                 break;
 
             case ':':
-                printf("Info Message Received\n");
-                break;
+                {
+                    printf("Info Message Received\n");
+                    StrMessage smg(*msg);
+                    char buf[128];
+                    smg.get_string(0, buf);
+                    printf("Data: %s\n", buf);
+                    break;
+                }
 
             default:
                 printf("Unsupported message received\n");
