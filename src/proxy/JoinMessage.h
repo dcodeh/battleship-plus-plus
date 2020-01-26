@@ -21,15 +21,15 @@ class JoinMessage : public StrMessage {
         uint8_t m_fleet;
 
     public:
-        JoinMessage();
+        JoinMessage() {};
 
-        ~JoinMessage();
+        ~JoinMessage() {};
 
         void initialize(char *pname, char *sname, ShipType t, uint8_t fleet);
 
-        char *get_player_name();
+        uint8_t get_player_name(char *dst);
 
-        char *get_ship_name();
+        uint8_t get_ship_name(char *dst);
 
         ShipType get_ship_class();
 

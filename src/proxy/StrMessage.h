@@ -69,6 +69,7 @@ class StrMessage : public Message {
           *     location of the requested string.
           * @return The length of the string that dest points to.
           */
+        // TODO DCB consider making this more object oriented
         uint8_t get_string(uint8_t index, char *dest);
          
         /**
