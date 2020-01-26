@@ -12,10 +12,14 @@
 #include "Common.h"
 #include "Message.h"
 #include "StrMessage.h"
+#include "ByteMessage.h"
 
 /** Send the version across the network to the remote Model */
 void ModelProxy::version(char *ver_string) {
-    printf("version %s\n", ver_string);
+    StrMessage *m = new StrMessage();
+    m->initialize('V', 1 /* num_strings */, &ver_string);
+    m->transmit(m_sockfd);
+    delete m;
 }
 
 /** Send the game parameters for this palyer to the remote model */
@@ -27,7 +31,9 @@ void ModelProxy::join(char *name, char *ship_name, ShipType ship_type,
 
 /** Inform the remote model that the client is quitting. */
 void ModelProxy::quit() {
-    printf("die\n");
+    ByteMessage *m = new ByteMessage('Q');
+    m->transmit(m_sockfd);
+    delete m;
 }
 
 /** Register a view with this object. */

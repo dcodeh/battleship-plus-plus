@@ -32,15 +32,14 @@ ViewProxy::~ViewProxy() {
 
 /** Send the version of the server to the client. */
 void ViewProxy::version(char *ver_string) {
-    // Message *m = new StrMessage('V', (uint8_t) 1 /* num_strings */, &ver_string);
-    // m->transmit(m_sockfd);
-    // delete m;
-    printf("%s\n", ver_string);
+    StrMessage *m = new StrMessage();
+    m->initialize('V', 1 /* num_strings */, &ver_string);
+    m->transmit(m_sockfd);
+    delete m;
 }
 
 /** Tell the client they should quit. */
 void ViewProxy::quit() {
-    printf("Sending quit message\n");
     Message *m = new ByteMessage('Q');
     m->transmit(m_sockfd);
     delete m;
@@ -48,15 +47,18 @@ void ViewProxy::quit() {
 
 /** Tell the client some information */
 void ViewProxy::info(char *msg) {
-    Message *m = new StrMessage();
-    ((StrMessage *)m) ->initialize(':', 1 /* num_strings*/, &msg);
+    StrMessage *m = new StrMessage();
+    m->initialize(':', 1 /* num_strings*/, &msg);
     m->transmit(m_sockfd);
     delete m;
 }
 
 /** Tell the client they did something wrong. */
 void ViewProxy::err(char *msg) {
-    printf("err %s\n", msg);
+    StrMessage *m = new StrMessage();
+    m->initialize('~', 1 /* num_strings */, &msg);
+    m->transmit(m_sockfd);
+    delete m;
 }
 
 /** Connect this proxy to the real server model. */
@@ -70,7 +72,6 @@ void ViewProxy::set_listener(ViewListener *m) {
   * do about them...
   */
 void ViewProxy::listen_for_messages(int sockfd) {
-    printf("ViewProxy thread started...\n");
     while (true) {
         // read a byte
         Message *msg = new Message();
