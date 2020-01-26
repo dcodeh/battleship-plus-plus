@@ -16,6 +16,7 @@
 #include "Message.h"
 #include "StrMessage.h"
 #include "ByteMessage.h"
+#include "JoinMessage.h"
 
 /** Create a new ViewProxy */
 ViewProxy::ViewProxy(int socket_fd) {
@@ -80,6 +81,23 @@ void ViewProxy::listen_for_messages(int sockfd) {
             case 'V':
                 printf("Version Message received\n");
                 break;
+            case 'J':
+                {
+                    char pname[128];
+                    char sname[128];
+                    ShipType t;
+                    uint8_t fleet;
+                    JoinMessage j(*msg);
+
+                    j.get_ship_name(sname);
+                    j.get_player_name(pname);
+                    t = j.get_ship_class();
+                    fleet = j.get_fleet();
+
+                    printf("Captain %s of the %d %s is joining fleet %d\n",
+                            pname, t, sname, fleet);
+                    break;
+                }
             default:
                 printf("Unsupported message received\n");
                 break;

@@ -13,6 +13,7 @@
 #include "Message.h"
 #include "StrMessage.h"
 #include "ByteMessage.h"
+#include "JoinMessage.h"
 
 /** Send the version across the network to the remote Model */
 void ModelProxy::version(char *ver_string) {
@@ -25,8 +26,10 @@ void ModelProxy::version(char *ver_string) {
 /** Send the game parameters for this palyer to the remote model */
 void ModelProxy::join(char *name, char *ship_name, ShipType ship_type,
                       uint8_t fleet) {
-    printf("Captain %s of the %s (type %d) joined fleet %d\n", name, ship_name,
-           ship_type, fleet);
+    JoinMessage *m = new JoinMessage();
+    m->initialize(name, ship_name, ship_type, fleet);
+    m->transmit(m_sockfd);
+    delete m;
 }
 
 /** Inform the remote model that the client is quitting. */

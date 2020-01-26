@@ -23,6 +23,8 @@ class JoinMessage : public StrMessage {
     public:
         JoinMessage() {};
 
+        JoinMessage(Message const&);
+
         ~JoinMessage() {};
 
         void initialize(char *pname, char *sname, ShipType t, uint8_t fleet);

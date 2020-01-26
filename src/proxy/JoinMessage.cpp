@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include "Common.h"
 
+JoinMessage::JoinMessage(Message const& m) : StrMessage(m) {}
+
 void JoinMessage::initialize(char *pname, char *sname, ShipType t,
         uint8_t fleet) {
 

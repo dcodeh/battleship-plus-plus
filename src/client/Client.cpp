@@ -96,6 +96,12 @@ int main (int argc, char **argv) {
     view -> set_listener(proxy);
     ((ModelProxy *) proxy) -> set_listener(view);
 
+    char name[] = "Cody";
+    char ship[] = "USS Enterprise";
+    ShipType t = ShipType::battleship;
+    uint8_t fleet = 4;
+    proxy->join(name, ship, t, fleet);
+
     while (view->alive()) {
         // twiddle your thumbs...
         usleep(15000);  //      ...slowly
